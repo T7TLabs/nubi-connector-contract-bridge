@@ -1,0 +1,18 @@
+[package]
+name = "contract-bridge"
+version = "0.0.1"
+authors = ["Mateo", "Gaziz"]
+edition = "2018"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+near-sdk = "4.0.0"
+near-contract-standards = "4.0.0"
+once_cell = "1.12.0"
+hex = "0.4.3"
+getrandom = { version = "0.2", features = ["custom"] }
+aurora-engine-types = { git = "https://github.com/aurora-is-near/aurora-engine", branch = "master", package = "aurora-engine-types", features = ["std"], default-features = false }
+ethabi = "17.2.0"
+lazy_static = "1.4.0"
