@@ -20,9 +20,10 @@ async function main() {
     `AuroraTest deployed to ${auroraTest.address}`
   );
 
-  await auroraTest.initialize("t7t.testnet");
+  await auroraTest.initialize();
   const owner = await auroraTest.TestOwner();
-  console.log("Aurora owner:", owner);
+  console.log("owner:", owner);
+
 }
 
 // We recommend this pattern to be able to use async/await everywhere

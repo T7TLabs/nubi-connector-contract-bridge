@@ -7,7 +7,6 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 contract AuroraTest is Initializable {
 
     address private _owner;
-    string private _nearOwner;
 
     struct tupleInput0 {
         uint256 tupleIn01;
@@ -20,9 +19,8 @@ contract AuroraTest is Initializable {
         uint256[] tupleIn3;
     }
 
-    function initialize(string calldata nearOwner) public initializer {
+    function initialize() public initializer {
         _owner = msg.sender;
-        _nearOwner = nearOwner;
     }
 
     // onlyOwner modifier that validates only 
@@ -38,16 +36,6 @@ contract AuroraTest is Initializable {
     // Returns true for owners otherwise false
     function isOwner() public view returns(bool) {
         return msg.sender == _owner;
-    }
-
-    function isNearOwner(string memory caller) public view returns(bool) {
-        return keccak256(abi.encodePacked(caller)) == keccak256(abi.encodePacked(_nearOwner));
-    }
-
-    function TestOnlyNearOwner(string memory caller) public view returns (string memory nearOwner) {
-        require(isNearOwner(caller), "Function accessible only by the Near (Aurora<->Near) owner !!");
-
-        return _nearOwner;
     }
 
     function TestOwner() public view returns (address) {

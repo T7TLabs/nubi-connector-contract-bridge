@@ -1,8 +1,6 @@
 /*!
 Contract bridge from Near to Aurora
 */
-#![allow(unused_mut)]
-
 mod aurora;
 mod utils;
 
@@ -29,21 +27,12 @@ impl ContractBridge {
         Self
     }
 
-    pub fn bind_aurora_contract_call(&mut self, aurora_address: String) -> Promise {
-        self.function_call(
-            aurora_address,
-            "initialize(string)".to_string(),
-            vec![env::current_account_id().as_str().to_string()]
-        )
-    }
-
     pub fn function_call(
         &mut self,
         aurora_address: String,
         function: String,
-        mut parameters: Vec<String>
+        parameters: Vec<String>,
     ) -> Promise {
-        parameters.push(env::current_account_id().as_str().to_string());
         let input = utils::solidity_function(&function, &parameters);
         let aurora_contract = utils::from_string_to_address(&aurora_address);
         let aurora_address: AccountId = AURORA_BRIDGE_ADDRESS
@@ -53,7 +42,7 @@ impl ContractBridge {
         aurora::ext_aurora::ext(aurora_address).call(CallArgs::V2(FunctionCallArgsV2 {
             contract: aurora_contract.0,
             value: RawU256::default(),
-            input
+            input,
         }))
     }
 }
@@ -104,8 +93,4 @@ mod tests {
         let result_decoded = SubmitResult::deserialize(&mut result.as_slice());
         println!("{:?}", result_decoded);
     }
-
-    // How to test the owner
-    // 1. Initialize owner.
-    // 2. Check private method execution by call TestOnlyNearOwner() method.
 }

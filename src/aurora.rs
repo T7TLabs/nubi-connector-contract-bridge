@@ -43,7 +43,7 @@ pub struct SubmitResult {
 pub struct FunctionCallArgsV2 {
     pub contract: RawAddress,
     pub value: RawU256,
-    pub input: Vec<u8>
+    pub input: Vec<u8>,
 }
 
 // Enum from Aurora

@@ -1,5 +1,3 @@
-#![allow(unused_mut)]
-
 use aurora_engine_types::{H256, U256};
 use ethabi::{ethereum_types::Address, Token};
 use near_sdk::env;
@@ -158,7 +156,7 @@ fn tokenize(parameter_type: &str, parameter_value: &str) -> Token {
 }
 
 pub(crate) fn solidity_function(function: &str, values: &[String]) -> Vec<u8> {
-    let mut parameters = function
+    let parameters = function
         .split(['(', ')', ',', ' '])
         .skip(1)
         .filter(|c| !c.is_empty())
@@ -169,11 +167,6 @@ pub(crate) fn solidity_function(function: &str, values: &[String]) -> Vec<u8> {
         values.len(),
         "Number of parameters don't match"
     );
-
-    // Add `caller` param represents Near private address for Aurora
-    // to check ownership on private methods.
-    let caller_param_name = "caller".to_string();
-    parameters.push(&caller_param_name);
 
     let parameters_token = parameters
         .iter()
@@ -187,6 +180,7 @@ pub(crate) fn solidity_function(function: &str, values: &[String]) -> Vec<u8> {
             tokenize(parameter, &values[i])
         })
         .collect::<Vec<_>>();
+
     build_input(function, &parameters_token)
 }
 
